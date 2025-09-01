@@ -1,14 +1,15 @@
 
 
 import './App.css'
+import Home from './pages/Home'
 
 function App() {
   
 
   return (
     <>
-      <div className='font-bold  text-3xl'>
-        HELLOW GUYSSSSSS
+      <div >
+        <Home/>
       </div>
     </>
   )
