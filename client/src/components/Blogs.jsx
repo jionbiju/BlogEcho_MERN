@@ -51,7 +51,7 @@ const Blogs = () => {
             </div>
 
             {/* Blog Posts Grid */}
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 '>
                 {filteredBlogs.map((blog) => (
                     <article key={blog.id} className='bg-slate-800/50 rounded-xl overflow-hidden border border-slate-700/50 hover:border-slate-600 transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-900/20'>
                         {/* Blog Image */}
