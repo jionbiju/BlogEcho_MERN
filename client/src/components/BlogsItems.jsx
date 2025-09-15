@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import blogData from '../assets/blogData';
-const Blogs = () => {
+import {Link} from 'react-router-dom'
+const BlogsItems = () => {
     const categories = ['All', 'Technology', 'Lifestyle', 'Business', 'Travel'];
     const [isactive, setIsActive] = useState('All');
 
@@ -51,8 +52,10 @@ const Blogs = () => {
             </div>
 
             {/* Blog Posts Grid */}
+            
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 '>
                 {filteredBlogs.map((blog) => (
+                    <Link key={blog.id} to={`/Blogs/${blog.id}`}>
                     <article key={blog.id} className='bg-slate-800/50 rounded-xl overflow-hidden border border-slate-700/50 hover:border-slate-600 transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-900/20'>
                         {/* Blog Image */}
                         <div className='relative overflow-hidden'>
@@ -90,13 +93,9 @@ const Blogs = () => {
                             </div>
 
                             {/* Author & Meta Info */}
-                            <div className='flex items-center justify-between text-xs text-slate-500'>
+                            <div className='flex items-center justify-between text-xs text-slate-500 mb-2'>
                                 <div className='flex items-center space-x-2'>
-                                    <img 
-                                        src={blog.author.avatar} 
-                                        alt={blog.author.name}
-                                        className='w-6 h-6 rounded-full'
-                                    />
+                                    
                                     <span>{blog.author.name}</span>
                                 </div>
                                 <div className='flex items-center space-x-3'>
@@ -107,8 +106,10 @@ const Blogs = () => {
                             </div>
                         </div>
                     </article>
+                    </Link>
                 ))}
             </div>
+
 
             {/* No posts message */}
             {filteredBlogs.length === 0 && (
@@ -120,4 +121,4 @@ const Blogs = () => {
     )
 }
 
-export default Blogs
+export default BlogsItems
