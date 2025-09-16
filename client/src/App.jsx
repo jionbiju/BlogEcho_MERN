@@ -5,7 +5,7 @@ import Blogs from './pages/Blogs'
 function App() {
   return (
     <Routes>
-      <Route path='/' element={<Home/>} />
+      <Route path='/blogs' element={<Home/>} />
       <Route path='/Blogs/:id' element={<Blogs/>}/>
     </Routes>
 
