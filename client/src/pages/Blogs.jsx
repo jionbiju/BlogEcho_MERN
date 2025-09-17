@@ -19,14 +19,14 @@ const Blogs = () => {
     }, [blog]);
 
     
-    // useEffect(() => {
-    //     const handleScroll = () => {
-    //         setIsScrolled(window.scrollY > 100);
-    //     };
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 100);
+        };
 
-    //     window.addEventListener('scroll', handleScroll);
-    //     return () => window.removeEventListener('scroll', handleScroll);
-    // }, []);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     const handleLike = () => {
         setIsLiked(!isLiked);
@@ -45,7 +45,6 @@ const Blogs = () => {
                 console.log('Error sharing:', error);
             }
         } else {
-            // Fallback: copy to clipboard
             navigator.clipboard.writeText(window.location.href);
             alert('Link copied to clipboard!');
         }
@@ -83,7 +82,7 @@ const Blogs = () => {
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-22">
                         <Link 
-                            to="/blogs"
+                            to="/"
                             className="inline-flex items-center px-3 py-2 text-sm font-medium text-slate-400 hover:text-slate-100 transition-colors"
                         >
                             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -194,7 +193,7 @@ const Blogs = () => {
                 {/* Content */}
                 <div className="prose prose-lg max-w-none mb-12">
                     <div className="bg-slate-800/30 backdrop-blur-sm rounded-xl p-6 md:p-8 border border-slate-700/30">
-                        <div className="text-slate-200 leading-relaxed whitespace-pre-wrap text-lg">
+                        <div className="text-slate-200 leading-relaxed whitespace-pre-wrap text-[20px]">
                             {blog.content}
                         </div>
                     </div>
@@ -214,8 +213,8 @@ const Blogs = () => {
 
                 {/* Related Articles */}
                 {blogData.filter(item => item.id !== blog.id && item.category === blog.category).length > 0 && (
-                    <section>
-                        <h2 className="text-2xl font-bold text-slate-100 mb-8">Related Articles</h2>
+                    <section className='mb-16'>
+                        <h2 className="text-2xl font-bold text-slate-100 mb-8 ">Related Articles</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {blogData
                                 .filter(item => item.id !== blog.id && item.category === blog.category)
