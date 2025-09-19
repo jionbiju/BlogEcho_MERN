@@ -3,6 +3,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import multer from 'multer';
+import userRouter from './routes/usserRoutes.js';
 
 dotenv.config();
 
@@ -13,6 +14,9 @@ const mongoDBUrl = process.env.MONGO_URL;
 
 //Parsing
 app.use(express.json())
+
+//Middleware
+app.use('/api/users',userRouter);
 
 //Cors
 app.use(cors());
