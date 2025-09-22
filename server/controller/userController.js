@@ -2,6 +2,7 @@ import userModel from "../models/userModel.js";
 import bcrypt from 'bcryptjs';
 import createToken from "../utils/createToken.js";
 
+//Register
 export const createUser = async(req,res) => {
     try {
         const {email,username,password} = req.body;
@@ -43,6 +44,7 @@ export const createUser = async(req,res) => {
     }
 }
 
+//Login
 export const loginUser = async (req,res) => {
     try {
         const {email,password} = req.body;
@@ -51,6 +53,11 @@ export const loginUser = async (req,res) => {
             createToken(res,user.id);
             return res.status(200).json({
                 message:"Login successfully",
+                user:{
+                    userId:user._id,
+                    username:user.username,
+                    email:user.email
+                }
             })
         }
         else{
@@ -66,6 +73,7 @@ export const loginUser = async (req,res) => {
     }
 }
 
+//Logout
 export const logoutUser = async (req,res) => {
     try {
         res.clearCookie("jwt",{sameSite:"none",secure:true}).status(200).send("User logged out successfully");
@@ -74,3 +82,4 @@ export const logoutUser = async (req,res) => {
         res.status(500).json(error);
     }
 }
+
