@@ -11,5 +11,16 @@ export const loginUser = async (credentials) => {
         return response.data;
     } catch (error) {
         console.log("Error in login:",error);
+        throw error;
+    }
+}
+
+export const registerUser = async (credentials) => {
+    try {
+        const response = await axiosInstance.post('/register',credentials);
+        return response.data;
+    } catch (error) {
+        console.log("Error in signup:",error);
+        throw error;
     }
 }
