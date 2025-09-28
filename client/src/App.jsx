@@ -5,6 +5,7 @@ import Blogs from './pages/Blogs'
 import Login from './pages/Login'
 import { ToastContainer } from 'react-toastify'
 import Register from './pages/Register'
+import CreatePost from './pages/CreatePost'
 function App() {
   return (
     <div>
@@ -14,6 +15,7 @@ function App() {
       <Route path='/Blogs/:id' element={<Blogs/>}/>
       <Route path='/login' element={<Login/>}/>
       <Route path='/register' element={<Register/>}/>
+      <Route path='/createpost' element={<CreatePost/>}/>
     </Routes>
     </div>
     

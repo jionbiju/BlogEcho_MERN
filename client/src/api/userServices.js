@@ -24,3 +24,12 @@ export const registerUser = async (credentials) => {
         throw error;
     }
 }
+
+export const logout = async () => {
+    try {
+        const response = await axiosInstance.post('/logout');
+        return response.data;
+    } catch (error) {
+        console.log("Error in logout:",error);
+    }
+}

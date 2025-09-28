@@ -1,13 +1,16 @@
 
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import { loginUser } from '../api/userServices';
+import { userContext } from '../Context/context';
 
 const Login = () => {
 
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
+
+    const {setIsLogin,setUser} = useContext(userContext);
 
     const navigate = useNavigate();
 
@@ -15,6 +18,8 @@ const Login = () => {
         e.preventDefault();
         try {
             const data = await loginUser({email,password});
+            setIsLogin(true);
+            setUser({id:data.user.userId});
             toast.success("Login successful");
             navigate('/');
         } catch (error) {

@@ -20,7 +20,7 @@ const Register = () => {
         }
 
         try {
-            const data = await registerUser({ username, email, password });
+            await registerUser({ username, email, password });
             toast.success("Registration successful");
             navigate('/login');
         } catch (error) {
