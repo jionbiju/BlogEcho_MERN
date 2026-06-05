@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import multer from 'multer';
 import userRouter from './routes/usserRoutes.js';
 import cookieParser from 'cookie-parser';
+import postRoutes from './routes/postRoutes.js'
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use(cors(corsOptions));
 
 //Middleware
 app.use('/api/users',userRouter);
+app.use('/api/blog',postRoutes);
 
 //MongoDB Connetion
 const connectDB = async () => {
