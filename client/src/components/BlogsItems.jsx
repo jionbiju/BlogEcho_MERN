@@ -262,7 +262,7 @@ const BlogsItems = () => {
                                 </button>
                             );
                         }
-                        // Ellipsis
+                        
                         if (page === currentPage - 2 || page === currentPage + 2) {
                             return <span key={page} className='text-slate-600 px-1'>…</span>;
                         }

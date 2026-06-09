@@ -32,7 +32,7 @@ export const getPostById = async (id) => {
     }
 };
 
-// Create a new post (multipart/form-data for image upload)
+// Create a new post 
 export const createPost = async (formData) => {
     try {
         const response = await axiosInstance.post('/createPost', formData, {

@@ -1,7 +1,7 @@
 import postModel from "../models/postModel.js";
 import path from 'path';
 
-// Helper: generate slug from title
+
 const generateSlug = (title) => {
     return title
         .toLowerCase()
@@ -11,7 +11,7 @@ const generateSlug = (title) => {
         .replace(/-+/g, '-');
 };
 
-// Helper: calculate read time
+
 const calculateReadTime = (content) => {
     const wordsPerMinute = 200;
     const wordCount = content.trim().split(/\s+/).length;
@@ -57,7 +57,7 @@ export const getAllPosts = async (req, res) => {
     }
 };
 
-// GET /api/blog/posts/:id  — single post (increments views)
+// GET /api/blog/posts/:id
 export const getPostById = async (req, res) => {
     try {
         const post = await postModel
@@ -68,7 +68,7 @@ export const getPostById = async (req, res) => {
             return res.status(404).json({ message: 'Post not found' });
         }
 
-        // Increment views
+        
         post.views += 1;
         await post.save();
 
@@ -79,7 +79,7 @@ export const getPostById = async (req, res) => {
     }
 };
 
-// POST /api/blog/createPost  — create a new post (protected)
+// POST /api/blog/createPost   create a new post 
 export const createPost = async (req, res) => {
     try {
         const { title, excerpt, content, category, tags, readTime } = req.body;
@@ -88,13 +88,12 @@ export const createPost = async (req, res) => {
             return res.status(400).json({ message: 'Title and content are required' });
         }
 
-        // Handle image upload
+       
         let imageUrl = '';
         if (req.file) {
             imageUrl = `/uploads/${req.file.filename}`;
         }
 
-        // Parse tags
         let tagsArray = [];
         if (tags) {
             tagsArray = typeof tags === 'string'
@@ -102,7 +101,6 @@ export const createPost = async (req, res) => {
                 : tags;
         }
 
-        // Generate unique slug
         let slug = generateSlug(title);
         const existing = await postModel.findOne({ slug });
         if (existing) {
@@ -131,7 +129,7 @@ export const createPost = async (req, res) => {
     }
 };
 
-// PUT /api/blog/:id  — update a post (protected, owner only)
+// PUT /api/blog/:id  — update a post 
 export const updatePost = async (req, res) => {
     try {
         const post = await postModel.findById(req.params.id);
@@ -172,7 +170,7 @@ export const updatePost = async (req, res) => {
     }
 };
 
-// DELETE /api/blog/:id  — delete a post (protected, owner only)
+// DELETE /api/blog/:id  
 export const deletePost = async (req, res) => {
     try {
         const post = await postModel.findById(req.params.id);
@@ -193,7 +191,7 @@ export const deletePost = async (req, res) => {
     }
 };
 
-// PUT /api/blog/:id/like  — toggle like (protected)
+// PUT /api/blog/:id/like  
 export const toggleLike = async (req, res) => {
     try {
         const post = await postModel.findById(req.params.id);
@@ -218,7 +216,7 @@ export const toggleLike = async (req, res) => {
     }
 };
 
-// GET /api/blog/user/:userId  — get all posts by a specific user
+// GET /api/blog/user/:userId 
 export const getPostsByUser = async (req, res) => {
     try {
         const posts = await postModel
