@@ -1,737 +1,269 @@
-// import React, { useState, useContext } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import { toast } from 'react-toastify';
-// import { userContext } from '../Context/context';
-// // import { createBlog } from '../api/blogServices'; // You'll need to create this API function
-
-// const CreatePost = () => {
-//   const { user } = useContext(userContext);
-//   const navigate = useNavigate();
-
-//   const [formData, setFormData] = useState({
-//     title: '',
-//     description: '',
-//     content: '',
-//     authorName: user?.name || '',
-//     category: '',
-//     tags: '',
-//   });
-  
-//   const [featuredImage, setFeaturedImage] = useState(null);
-//   const [imagePreview, setImagePreview] = useState('');
-//   const [isSubmitting, setIsSubmitting] = useState(false);
-
-//   // Handle text input changes
-//   const handleInputChange = (e) => {
-//     const { name, value } = e.target;
-//     setFormData(prev => ({
-//       ...prev,
-//       [name]: value
-//     }));
-//   };
-
-//   // Handle image upload
-//   const handleImageChange = (e) => {
-//     const file = e.target.files[0];
-//     if (file) {
-//       // Check file size (limit to 5MB)
-//       if (file.size > 5 * 1024 * 1024) {
-//         toast.error('Image size should be less than 5MB');
-//         return;
-//       }
-      
-//       // Check file type
-//       if (!file.type.startsWith('image/')) {
-//         toast.error('Please select a valid image file');
-//         return;
-//       }
-
-//       setFeaturedImage(file);
-      
-//       // Create preview
-//       const reader = new FileReader();
-//       reader.onload = () => {
-//         setImagePreview(reader.result);
-//       };
-//       reader.readAsDataURL(file);
-//     }
-//   };
-
-//   // Remove image
-//   const removeImage = () => {
-//     setFeaturedImage(null);
-//     setImagePreview('');
-//     // Reset file input
-//     document.getElementById('featured-image').value = '';
-//   };
-
-//   // Handle form submission
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-    
-//     // Basic validation
-//     if (!formData.title.trim() || !formData.content.trim()) {
-//       toast.error('Title and content are required');
-//       return;
-//     }
-
-//     setIsSubmitting(true);
-
-//     try {
-//       // Create FormData for file upload
-//       const blogData = new FormData();
-//       blogData.append('title', formData.title);
-//       blogData.append('description', formData.description);
-//       blogData.append('content', formData.content);
-//       blogData.append('authorName', formData.authorName);
-//       blogData.append('category', formData.category);
-//       blogData.append('tags', formData.tags);
-      
-//       if (featuredImage) {
-//         blogData.append('featuredImage', featuredImage);
-//       }
-
-//       // Uncomment when you create the API function
-//       // const response = await createBlog(blogData);
-      
-//       // Simulate API call for now
-//       await new Promise(resolve => setTimeout(resolve, 2000));
-      
-//       toast.success('Blog published successfully!');
-//       navigate('/'); // or navigate to the created blog page
-      
-//     } catch (error) {
-//       console.error('Error creating blog:', error);
-//       toast.error('Failed to publish blog. Please try again.');
-//     } finally {
-//       setIsSubmitting(false);
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-slate-900 py-8">
-//       <div className="max-w-4xl mx-auto px-4">
-//         <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
-//           {/* Header */}
-//           <div className="px-8 py-6 border-b border-slate-700">
-//             <h1 className="text-3xl font-bold text-slate-100">Write New Blog</h1>
-//             <p className="text-slate-400 mt-2">Share your thoughts with the world</p>
-//           </div>
-
-//           {/* Form */}
-//           <form onSubmit={handleSubmit} className="p-8 space-y-6">
-//             {/* Title */}
-//             <div>
-//               <label htmlFor="title" className="block text-sm font-medium text-slate-300 mb-2">
-//                 Blog Title *
-//               </label>
-//               <input
-//                 type="text"
-//                 id="title"
-//                 name="title"
-//                 value={formData.title}
-//                 onChange={handleInputChange}
-//                 className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-md text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-//                 placeholder="Enter an engaging title for your blog"
-//                 required
-//               />
-//             </div>
-
-//             {/* Description */}
-//             <div>
-//               <label htmlFor="description" className="block text-sm font-medium text-slate-300 mb-2">
-//                 Short Description
-//               </label>
-//               <textarea
-//                 id="description"
-//                 name="description"
-//                 value={formData.description}
-//                 onChange={handleInputChange}
-//                 rows="3"
-//                 className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-md text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-vertical"
-//                 placeholder="Write a brief description of your blog post"
-//               />
-//             </div>
-
-//             {/* Featured Image */}
-//             <div>
-//               <label htmlFor="featured-image" className="block text-sm font-medium text-slate-300 mb-2">
-//                 Featured Image
-//               </label>
-              
-//               {!imagePreview ? (
-//                 <div className="border-2 border-dashed border-slate-600 rounded-md p-6 text-center hover:border-slate-500 transition-colors">
-//                   <input
-//                     type="file"
-//                     id="featured-image"
-//                     accept="image/*"
-//                     onChange={handleImageChange}
-//                     className="hidden"
-//                   />
-//                   <label htmlFor="featured-image" className="cursor-pointer">
-//                     <div className="text-slate-400 mb-2">
-//                       <svg className="mx-auto h-12 w-12" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-//                         <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-//                       </svg>
-//                     </div>
-//                     <p className="text-slate-300">Click to upload featured image</p>
-//                     <p className="text-xs text-slate-500 mt-1">PNG, JPG, GIF up to 5MB</p>
-//                   </label>
-//                 </div>
-//               ) : (
-//                 <div className="relative">
-//                   <img
-//                     src={imagePreview}
-//                     alt="Preview"
-//                     className="w-full h-64 object-cover rounded-md"
-//                   />
-//                   <button
-//                     type="button"
-//                     onClick={removeImage}
-//                     className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transition-colors"
-//                   >
-//                     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-//                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-//                     </svg>
-//                   </button>
-//                 </div>
-//               )}
-//             </div>
-
-//             {/* Author Name and Category Row */}
-//             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-//               <div>
-//                 <label htmlFor="authorName" className="block text-sm font-medium text-slate-300 mb-2">
-//                   Author Name
-//                 </label>
-//                 <input
-//                   type="text"
-//                   id="authorName"
-//                   name="authorName"
-//                   value={formData.authorName}
-//                   onChange={handleInputChange}
-//                   className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-md text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-//                   placeholder="Your name"
-//                 />
-//               </div>
-
-//               <div>
-//                 <label htmlFor="category" className="block text-sm font-medium text-slate-300 mb-2">
-//                   Category
-//                 </label>
-//                 <select
-//                   id="category"
-//                   name="category"
-//                   value={formData.category}
-//                   onChange={handleInputChange}
-//                   className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-md text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-//                 >
-//                   <option value="">Select a category</option>
-//                   <option value="technology">Technology</option>
-//                   <option value="lifestyle">Lifestyle</option>
-//                   <option value="travel">Travel</option>
-//                   <option value="food">Food</option>
-//                   <option value="health">Health</option>
-//                   <option value="business">Business</option>
-//                   <option value="education">Education</option>
-//                   <option value="entertainment">Entertainment</option>
-//                   <option value="other">Other</option>
-//                 </select>
-//               </div>
-//             </div>
-
-//             {/* Tags */}
-//             <div>
-//               <label htmlFor="tags" className="block text-sm font-medium text-slate-300 mb-2">
-//                 Tags
-//               </label>
-//               <input
-//                 type="text"
-//                 id="tags"
-//                 name="tags"
-//                 value={formData.tags}
-//                 onChange={handleInputChange}
-//                 className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-md text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-//                 placeholder="Enter tags separated by commas (e.g., react, javascript, web development)"
-//               />
-//             </div>
-
-//             {/* Content */}
-//             <div>
-//               <label htmlFor="content" className="block text-sm font-medium text-slate-300 mb-2">
-//                 Content *
-//               </label>
-//               <textarea
-//                 id="content"
-//                 name="content"
-//                 value={formData.content}
-//                 onChange={handleInputChange}
-//                 rows="12"
-//                 className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-md text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-vertical"
-//                 placeholder="Write your blog content here..."
-//                 required
-//               />
-//             </div>
-
-//             {/* Action Buttons */}
-//             <div className="flex gap-4 pt-4">
-//               <button
-//                 type="button"
-//                 onClick={() => navigate('/')}
-//                 className="px-6 py-3 bg-slate-600 hover:bg-slate-700 text-slate-200 font-medium rounded-md transition-colors"
-//               >
-//                 Cancel
-//               </button>
-              
-//               <button
-//                 type="submit"
-//                 disabled={isSubmitting}
-//                 className="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:cursor-not-allowed text-white font-medium rounded-md transition-colors"
-//               >
-//                 {isSubmitting ? (
-//                   <span className="flex items-center justify-center">
-//                     <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-//                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-//                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-//                     </svg>
-//                     Publishing...
-//                   </span>
-//                 ) : (
-//                   'Publish Blog'
-//                 )}
-//               </button>
-//             </div>
-//           </form>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default CreatePost;
-
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import axios from 'axios';
-import { userContext } from '../Context/context';
+import { createPost } from '../api/postServices';
+import Navbar from '../components/Navbar';
+
+const CATEGORIES = ['Technology', 'Lifestyle', 'Travel', 'Food', 'Health', 'Business', 'Education', 'Entertainment', 'Other'];
+
+const generateSlug = (title) =>
+    title.toLowerCase().trim()
+        .replace(/[^a-z0-9 -]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+
+const calculateReadTime = (content) => {
+    const words = content.trim().split(/\s+/).length;
+    return `${Math.max(1, Math.ceil(words / 200))} min read`;
+};
 
 const CreatePost = () => {
-  const { user } = useContext(userContext);
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    title: '',
-    slug: '',
-    excerpt: '',
-    content: '',
-    category: '',
-    tags: '',
-    readTime: '',
-  });
-  
-  const [featuredImage, setFeaturedImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Function to generate slug from title
-  const generateSlug = (title) => {
-    return title
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9 -]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-');
-  };
-
-  // Function to estimate read time
-  const calculateReadTime = (content) => {
-    const wordsPerMinute = 200;
-    const wordCount = content.trim().split(/\s+/).length;
-    const readTime = Math.ceil(wordCount / wordsPerMinute);
-    return `${readTime} min read`;
-  };
-
-  // Handle text input changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => {
-      const updated = {
-        ...prev,
-        [name]: value
-      };
-      
-      // Auto-calculate read time when content changes
-      if (name === 'content') {
-        updated.readTime = calculateReadTime(value);
-      }
-      
-      return updated;
+    const [formData, setFormData] = useState({
+        title: '',
+        excerpt: '',
+        content: '',
+        category: '',
+        tags: '',
     });
-  };
+    const [image, setImage] = useState(null);
+    const [imagePreview, setImagePreview] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Handle image upload
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      // Check file size (limit to 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error('Image size should be less than 5MB');
-        return;
-      }
-      
-      // Check file type
-      if (!file.type.startsWith('image/')) {
-        toast.error('Please select a valid image file');
-        return;
-      }
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
 
-      setFeaturedImage(file);
-      
-      // Create preview
-      const reader = new FileReader();
-      reader.onload = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // Remove image
-  const removeImage = () => {
-    setFeaturedImage(null);
-    setImagePreview('');
-    // Reset file input
-    document.getElementById('featured-image').value = '';
-  };
-
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    // Basic validation
-    if (!formData.title.trim() || !formData.slug.trim() || !formData.content.trim()) {
-      toast.error('Title, slug, and content are required');
-      return;
-    }
-
-    // Validate slug format (URL-friendly)
-    const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-    if (!slugRegex.test(formData.slug)) {
-      toast.error('Slug must be lowercase, alphanumeric, and use hyphens only (e.g., my-blog-post)');
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      // Create FormData for file upload
-      const blogData = new FormData();
-      
-      // Generate slug from title
-      const slug = generateSlug(formData.title);
-      
-      // Prepare tags array
-      const tagsArray = formData.tags
-        .split(',')
-        .map(tag => tag.trim())
-        .filter(tag => tag.length > 0);
-
-      // Append form data matching the schema
-      blogData.append('title', formData.title);
-      blogData.append('slug', slug);
-      blogData.append('excerpt', formData.excerpt);
-      blogData.append('content', formData.content);
-      blogData.append('category', formData.category);
-      blogData.append('readTime', formData.readTime || calculateReadTime(formData.content));
-      
-      // Author information from context
-      blogData.append('author[name]', user?.name || 'Anonymous');
-      blogData.append('author[avatar]', user?.avatar || '');
-      blogData.append('author[role]', user?.role || 'Author');
-      
-      // Handle tags
-      tagsArray.forEach((tag, index) => {
-        blogData.append(`tags[${index}]`, tag);
-      });
-      
-      if (featuredImage) {
-        blogData.append('image', featuredImage);
-      }
-
-      // API call to backend
-      const response = await axios.post(
-        'http://localhost:5000/api/blog/createPost',
-        blogData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          // Add authorization token if you have authentication
-          // headers: {
-          //   'Content-Type': 'multipart/form-data',
-          //   'Authorization': `Bearer ${user?.token}`
-          // },
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) {
+            toast.error('Image must be under 5MB');
+            return;
         }
-      );
+        if (!file.type.startsWith('image/')) {
+            toast.error('Please select a valid image file');
+            return;
+        }
+        setImage(file);
+        const reader = new FileReader();
+        reader.onload = () => setImagePreview(reader.result);
+        reader.readAsDataURL(file);
+    };
 
-      if (response.data.success) {
-        toast.success('Blog published successfully!');
-        // Reset form
-        setFormData({
-          title: '',
-          excerpt: '',
-          content: '',
-          category: '',
-          tags: '',
-          readTime: '',
-        });
-        setFeaturedImage(null);
+    const removeImage = () => {
+        setImage(null);
         setImagePreview('');
-        
-        // Navigate to the created blog or home page
-        navigate('/'); // or navigate(`/blog/${response.data.post.slug}`)
-      }
-      
-    } catch (error) {
-      console.error('Error creating blog:', error);
-      
-      // Handle different types of errors
-      if (error.response) {
-        // Server responded with error status
-        const errorMessage = error.response.data?.message || 'Failed to publish blog';
-        toast.error(errorMessage);
-        
-        // Handle validation errors
-        if (error.response.status === 400 && error.response.data?.errors) {
-          error.response.data.errors.forEach(err => {
-            toast.error(err.message);
-          });
+        document.getElementById('featured-image').value = '';
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const { title, content, category } = formData;
+
+        if (!title.trim() || !content.trim()) {
+            toast.error('Title and content are required');
+            return;
         }
-      } else if (error.request) {
-        // Request was made but no response received
-        toast.error('Unable to connect to server. Please check your connection.');
-      } else {
-        // Something else happened
-        toast.error('An unexpected error occurred. Please try again.');
-      }
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+        if (!category) {
+            toast.error('Please select a category');
+            return;
+        }
 
-  return (
-    <div className="min-h-screen bg-slate-900 py-8">
-      <div className="max-w-4xl mx-auto px-4">
-        <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
-          {/* Header */}
-          <div className="px-8 py-6 border-b border-slate-700">
-            <h1 className="text-3xl font-bold text-slate-100">Write New Blog</h1>
-            <p className="text-slate-400 mt-2">Share your thoughts with the world</p>
-          </div>
+        setIsSubmitting(true);
+        try {
+            const data = new FormData();
+            data.append('title', title.trim());
+            data.append('excerpt', formData.excerpt.trim());
+            data.append('content', content.trim());
+            data.append('category', category);
+            data.append('readTime', calculateReadTime(content));
+            data.append('tags', formData.tags);
+            if (image) data.append('image', image);
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="p-8 space-y-6">
-            {/* Title */}
-            <div>
-              <label htmlFor="title" className="block text-sm font-medium text-slate-300 mb-2">
-                Blog Title *
-              </label>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                value={formData.title}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-md text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Enter an engaging title for your blog"
-                required
-              />
-              {formData.title && (
-                <p className="text-xs text-slate-400 mt-1">
-                  Slug: {generateSlug(formData.title)}
-                </p>
-              )}
-            </div>
+            const response = await createPost(data);
 
-            {/* Excerpt */}
-            <div>
-              <label htmlFor="excerpt" className="block text-sm font-medium text-slate-300 mb-2">
-                Excerpt
-              </label>
-              <textarea
-                id="excerpt"
-                name="excerpt"
-                value={formData.excerpt}
-                onChange={handleInputChange}
-                rows="3"
-                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-md text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-vertical"
-                placeholder="Write a brief excerpt of your blog post"
-              />
-            </div>
+            if (response.success) {
+                toast.success('Post published successfully!');
+                navigate(`/Blogs/${response.post._id}`);
+            }
+        } catch (error) {
+            const msg = error.response?.data?.message || 'Failed to publish post';
+            toast.error(msg);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
-            {/* Featured Image */}
-            <div>
-              <label htmlFor="featured-image" className="block text-sm font-medium text-slate-300 mb-2">
-                Featured Image
-              </label>
-              
-              {!imagePreview ? (
-                <div className="border-2 border-dashed border-slate-600 rounded-md p-6 text-center hover:border-slate-500 transition-colors">
-                  <input
-                    type="file"
-                    id="featured-image"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="hidden"
-                  />
-                  <label htmlFor="featured-image" className="cursor-pointer">
-                    <div className="text-slate-400 mb-2">
-                      <svg className="mx-auto h-12 w-12" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
+    const wordCount = formData.content.trim() ? formData.content.trim().split(/\s+/).length : 0;
+
+    return (
+        <div className="min-h-screen bg-slate-900">
+            <Navbar />
+            <div className="max-w-4xl mx-auto px-4 py-10">
+                <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
+                    {/* Header */}
+                    <div className="px-8 py-6 border-b border-slate-700">
+                        <h1 className="text-3xl font-bold text-slate-100">Write New Post</h1>
+                        <p className="text-slate-400 mt-2">Share your thoughts with the world</p>
                     </div>
-                    <p className="text-slate-300">Click to upload featured image</p>
-                    <p className="text-xs text-slate-500 mt-1">PNG, JPG, GIF up to 5MB</p>
-                  </label>
+
+                    <form onSubmit={handleSubmit} className="p-8 space-y-6">
+                        {/* Title */}
+                        <div>
+                            <label className="block text-sm font-medium text-slate-300 mb-2">
+                                Title <span className="text-red-400">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="title"
+                                value={formData.title}
+                                onChange={handleInputChange}
+                                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-md text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Write an engaging title..."
+                                required
+                            />
+                            {formData.title && (
+                                <p className="text-xs text-slate-500 mt-1">
+                                    Slug: <span className="text-slate-400">{generateSlug(formData.title)}</span>
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Excerpt */}
+                        <div>
+                            <label className="block text-sm font-medium text-slate-300 mb-2">Excerpt</label>
+                            <textarea
+                                name="excerpt"
+                                value={formData.excerpt}
+                                onChange={handleInputChange}
+                                rows={3}
+                                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-md text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-vertical"
+                                placeholder="A short summary shown on the post card..."
+                            />
+                        </div>
+
+                        {/* Featured Image */}
+                        <div>
+                            <label className="block text-sm font-medium text-slate-300 mb-2">Featured Image</label>
+                            {!imagePreview ? (
+                                <div className="border-2 border-dashed border-slate-600 rounded-md p-8 text-center hover:border-slate-500 transition-colors">
+                                    <input
+                                        type="file"
+                                        id="featured-image"
+                                        accept="image/*"
+                                        onChange={handleImageChange}
+                                        className="hidden"
+                                    />
+                                    <label htmlFor="featured-image" className="cursor-pointer">
+                                        <svg className="mx-auto h-12 w-12 text-slate-500 mb-3" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                        <p className="text-slate-300 font-medium">Click to upload image</p>
+                                        <p className="text-xs text-slate-500 mt-1">PNG, JPG, WEBP up to 5MB</p>
+                                    </label>
+                                </div>
+                            ) : (
+                                <div className="relative">
+                                    <img src={imagePreview} alt="Preview" className="w-full h-64 object-cover rounded-md" />
+                                    <button
+                                        type="button"
+                                        onClick={removeImage}
+                                        className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transition-colors"
+                                    >
+                                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Category & Tags */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block text-sm font-medium text-slate-300 mb-2">
+                                    Category <span className="text-red-400">*</span>
+                                </label>
+                                <select
+                                    name="category"
+                                    value={formData.category}
+                                    onChange={handleInputChange}
+                                    className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-md text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    required
+                                >
+                                    <option value="">Select a category</option>
+                                    {CATEGORIES.map(c => (
+                                        <option key={c} value={c}>{c}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-slate-300 mb-2">Tags</label>
+                                <input
+                                    type="text"
+                                    name="tags"
+                                    value={formData.tags}
+                                    onChange={handleInputChange}
+                                    className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-md text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="react, javascript, web (comma separated)"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Content */}
+                        <div>
+                            <label className="block text-sm font-medium text-slate-300 mb-2">
+                                Content <span className="text-red-400">*</span>
+                            </label>
+                            <textarea
+                                name="content"
+                                value={formData.content}
+                                onChange={handleInputChange}
+                                rows={14}
+                                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-md text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-vertical"
+                                placeholder="Write your post content here..."
+                                required
+                            />
+                            {wordCount > 0 && (
+                                <p className="text-xs text-slate-500 mt-1">
+                                    {wordCount} words · {calculateReadTime(formData.content)}
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex gap-4 pt-2">
+                            <button
+                                type="button"
+                                onClick={() => navigate('/')}
+                                className="px-6 py-3 bg-slate-600 hover:bg-slate-700 text-slate-200 font-medium rounded-md transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                disabled={isSubmitting}
+                                className="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:cursor-not-allowed text-white font-medium rounded-md transition-colors"
+                            >
+                                {isSubmitting ? (
+                                    <span className="flex items-center justify-center gap-2">
+                                        <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                        </svg>
+                                        Publishing...
+                                    </span>
+                                ) : 'Publish Post'}
+                            </button>
+                        </div>
+                    </form>
                 </div>
-              ) : (
-                <div className="relative">
-                  <img
-                    src={imagePreview}
-                    alt="Preview"
-                    className="w-full h-64 object-cover rounded-md"
-                  />
-                  <button
-                    type="button"
-                    onClick={removeImage}
-                    className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transition-colors"
-                  >
-                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
-              )}
             </div>
-
-            {/* Category and Read Time Row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="category" className="block text-sm font-medium text-slate-300 mb-2">
-                  Category
-                </label>
-                <select
-                  id="category"
-                  name="category"
-                  value={formData.category}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-md text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                >
-                  <option value="">Select a category</option>
-                  <option value="technology">Technology</option>
-                  <option value="lifestyle">Lifestyle</option>
-                  <option value="travel">Travel</option>
-                  <option value="food">Food</option>
-                  <option value="health">Health</option>
-                  <option value="business">Business</option>
-                  <option value="education">Education</option>
-                  <option value="entertainment">Entertainment</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-
-              <div>
-                <label htmlFor="readTime" className="block text-sm font-medium text-slate-300 mb-2">
-                  Read Time
-                </label>
-                <input
-                  type="text"
-                  id="readTime"
-                  name="readTime"
-                  value={formData.readTime}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-md text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Auto-calculated from content"
-                  readOnly
-                />
-                <p className="text-xs text-slate-400 mt-1">
-                  Auto-calculated based on content length
-                </p>
-              </div>
-            </div>
-
-            {/* Tags */}
-            <div>
-              <label htmlFor="tags" className="block text-sm font-medium text-slate-300 mb-2">
-                Tags
-              </label>
-              <input
-                type="text"
-                id="tags"
-                name="tags"
-                value={formData.tags}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-md text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Enter tags separated by commas (e.g., react, javascript, web development)"
-              />
-            </div>
-
-            {/* Content */}
-            <div>
-              <label htmlFor="content" className="block text-sm font-medium text-slate-300 mb-2">
-                Content *
-              </label>
-              <textarea
-                id="content"
-                name="content"
-                value={formData.content}
-                onChange={handleInputChange}
-                rows="12"
-                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-md text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-vertical"
-                placeholder="Write your blog content here..."
-                required
-              />
-              {formData.content && (
-                <p className="text-xs text-slate-400 mt-1">
-                  Word count: {formData.content.trim().split(/\s+/).length} words
-                </p>
-              )}
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex gap-4 pt-4">
-              <button
-                type="button"
-                onClick={() => navigate('/')}
-                className="px-6 py-3 bg-slate-600 hover:bg-slate-700 text-slate-200 font-medium rounded-md transition-colors"
-              >
-                Cancel
-              </button>
-              
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:cursor-not-allowed text-white font-medium rounded-md transition-colors"
-              >
-                {isSubmitting ? (
-                  <span className="flex items-center justify-center">
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Publishing...
-                  </span>
-                ) : (
-                  'Publish Blog'
-                )}
-              </button>
-            </div>
-          </form>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default CreatePost;

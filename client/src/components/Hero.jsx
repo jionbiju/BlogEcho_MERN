@@ -1,7 +1,24 @@
-import React from 'react'
 import hero from '../assets/hero.jpg'
+import { useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
+import { userContext } from '../Context/context'
 
 const Hero = () => {
+  const navigate = useNavigate();
+  const { isLogin } = useContext(userContext);
+
+  const handleStartReading = () => {
+    document.getElementById('blogs-section')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleJoinCommunity = () => {
+    if (isLogin) {
+      navigate('/createpost');
+    } else {
+      navigate('/register');
+    }
+  };
+
   return (
     <div className='flex justify-between px-20  items-center mt-28'>
       <div className='flex-col items-start justify-center max-w-2xl space-y-6'>
@@ -25,11 +42,11 @@ const Hero = () => {
         </p>
 
         <div className='flex flex-col sm:flex-row gap-6 pt-4'>
-          <button className='px-8 py-4 cursor-pointer bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg shadow-lg hover:shadow-blue-500/25 transform hover:-translate-y-1 transition-all duration-300'>
+          <button onClick={handleStartReading} className='px-8 py-4 cursor-pointer bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg shadow-lg hover:shadow-blue-500/25 transform hover:-translate-y-1 transition-all duration-300'>
             Start Reading
           </button>
-          <button className='cursor-pointer px-8 py-4 border-2 border-slate-600 text-slate-300 font-semibold rounded-lg hover:border-blue-400 hover:text-blue-400 transition-all duration-300'>
-            Join Our Community
+          <button onClick={handleJoinCommunity} className='cursor-pointer px-8 py-4 border-2 border-slate-600 text-slate-300 font-semibold rounded-lg hover:border-blue-400 hover:text-blue-400 transition-all duration-300'>
+            {isLogin ? 'Write a Post' : 'Join Our Community'}
           </button>
         </div>
       </div>

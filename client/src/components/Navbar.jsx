@@ -7,13 +7,14 @@ import { logout } from "../api/userServices";
 import { toast } from "react-toastify";
 
 const Navbar = () => {
-  const { isLogin, setIsLogin } = useContext(userContext);
+  const { isLogin, setIsLogin, setUser } = useContext(userContext);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      await logout(); 
+      await logout();
       setIsLogin(false);
+      setUser(null);
       toast.success("Logged Out Successfully");
       navigate('/');
     } catch (error) {

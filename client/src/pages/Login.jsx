@@ -17,15 +17,15 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const data = await loginUser({email,password});
+            const data = await loginUser({ email, password });
             setIsLogin(true);
-            setUser({id:data.user.userId});
+            setUser(data.user);
             toast.success("Login successful");
             navigate('/');
         } catch (error) {
-            toast.error("Invalid Credentials")
+            const msg = error.response?.data?.message || "Invalid credentials";
+            toast.error(msg);
         }
-        
     };
 
     return (

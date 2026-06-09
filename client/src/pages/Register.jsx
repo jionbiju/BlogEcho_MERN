@@ -11,20 +11,25 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const navigate = useNavigate();
-     const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         if (password !== confirmPassword) {
             toast.error("Passwords do not match");
             return;
         }
+        if (password.length < 6) {
+            toast.error("Password must be at least 6 characters");
+            return;
+        }
 
         try {
-            await registerUser({ username, email, password });
-            toast.success("Registration successful");
+            const data = await registerUser({ username, email, password });
+            toast.success("Registration successful! Please sign in.");
             navigate('/login');
         } catch (error) {
-            toast.error("Registration failed. Please try again.");
+            const msg = error.response?.data?.message || "Registration failed. Please try again.";
+            toast.error(msg);
         }
     };
    
