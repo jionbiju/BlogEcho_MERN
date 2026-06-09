@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { getPostById, updatePost, deletePost } from '../api/postServices';
 import { getImageUrl } from '../api/config';
@@ -126,10 +126,17 @@ const EditPost = () => {
         <div className="min-h-screen bg-slate-900">
             <Navbar />
             <div className="max-w-4xl mx-auto px-4 py-10">
+                {/* Back link */}
+                <Link to={`/Blogs/${id}`} className="inline-flex items-center gap-1.5 text-slate-400 hover:text-slate-100 text-sm mb-6 transition-colors">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Back to Post
+                </Link>
                 <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
-                    <div className="px-8 py-6 border-b border-slate-700 flex items-center justify-between">
+                    <div className="px-4 sm:px-8 py-6 border-b border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div>
-                            <h1 className="text-3xl font-bold text-slate-100">Edit Post</h1>
+                            <h1 className="text-2xl sm:text-3xl font-bold text-slate-100">Edit Post</h1>
                             <p className="text-slate-400 mt-1">Update your post content</p>
                         </div>
                         <button
@@ -140,7 +147,7 @@ const EditPost = () => {
                         </button>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="p-8 space-y-6">
+                    <form onSubmit={handleSubmit} className="p-4 sm:p-8 space-y-6">
                         {/* Title */}
                         <div>
                             <label className="block text-sm font-medium text-slate-300 mb-2">Title *</label>

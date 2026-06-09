@@ -96,8 +96,15 @@ const Profile = () => {
         <div className="min-h-screen bg-slate-900">
             <Navbar />
             <div className="max-w-5xl mx-auto px-4 py-10">
+                {/* Back link */}
+                <Link to="/" className="inline-flex items-center gap-1.5 text-slate-400 hover:text-slate-100 text-sm mb-6 transition-colors">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Back to Home
+                </Link>
                 {/* Profile Header */}
-                <div className="bg-slate-800 rounded-xl border border-slate-700 p-8 mb-8">
+                <div className="bg-slate-800 rounded-xl border border-slate-700 p-4 sm:p-8 mb-8">
                     {!isEditing ? (
                         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
                             {/* Avatar */}

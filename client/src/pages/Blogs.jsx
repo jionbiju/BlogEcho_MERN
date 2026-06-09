@@ -132,51 +132,46 @@ const Blogs = () => {
             {/* Sticky top bar */}
             <div className="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-sm border-b border-slate-700/50">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-16">
-                        <Link to="/" className="inline-flex items-center px-3 py-2 text-sm font-medium text-slate-400 hover:text-slate-100 transition-colors">
-                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="flex items-center justify-between h-14 gap-2">
+                        <Link to="/" className="inline-flex items-center px-2 py-1.5 text-sm font-medium text-slate-400 hover:text-slate-100 transition-colors flex-shrink-0">
+                            <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                             </svg>
-                            All Posts
+                            <span className="hidden sm:inline">All Posts</span>
                         </Link>
 
-                        <div className="flex items-center space-x-3">
-                            {/* Author controls */}
+                        <div className="flex items-center gap-2">
                             {isAuthor && (
-                                <>
-                                    <button
-                                        onClick={() => navigate(`/edit/${post._id}`)}
-                                        className="inline-flex items-center px-3 py-1.5 bg-slate-700/50 text-slate-300 rounded-full text-sm font-medium hover:bg-slate-700 hover:text-white transition-all border border-slate-600/30"
-                                    >
-                                        ✏️ Edit
-                                    </button>
-                                </>
+                                <button
+                                    onClick={() => navigate(`/edit/${post._id}`)}
+                                    className="inline-flex items-center px-2 sm:px-3 py-1.5 bg-slate-700/50 text-slate-300 rounded-full text-xs sm:text-sm font-medium hover:bg-slate-700 hover:text-white transition-all border border-slate-600/30"
+                                >
+                                    ✏️ <span className="ml-1 hidden sm:inline">Edit</span>
+                                </button>
                             )}
 
-                            {/* Like */}
                             <button
                                 onClick={handleLike}
-                                className={`inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+                                className={`inline-flex items-center px-2 sm:px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 ${
                                     isLiked
                                         ? 'bg-red-600/20 text-red-400 hover:bg-red-600/30 border border-red-500/30'
                                         : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300 border border-slate-600/30'
                                 }`}
                             >
-                                <svg className="w-4 h-4 mr-1.5" fill={isLiked ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-4 h-4 mr-1" fill={isLiked ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                 </svg>
                                 {likes}
                             </button>
 
-                            {/* Share */}
                             <button
                                 onClick={handleShare}
-                                className="inline-flex items-center px-3 py-1.5 bg-slate-700/50 text-slate-400 rounded-full text-sm font-medium hover:bg-slate-700 hover:text-slate-300 transition-all duration-200 border border-slate-600/30"
+                                className="inline-flex items-center px-2 sm:px-3 py-1.5 bg-slate-700/50 text-slate-400 rounded-full text-xs sm:text-sm font-medium hover:bg-slate-700 hover:text-slate-300 transition-all duration-200 border border-slate-600/30"
                             >
-                                <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-4 h-4 sm:mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
                                 </svg>
-                                Share
+                                <span className="hidden sm:inline">Share</span>
                             </button>
                         </div>
                     </div>
@@ -205,8 +200,8 @@ const Blogs = () => {
                 )}
 
                 {/* Author & Meta */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-8 border-b border-slate-700/50">
-                    <div className="flex items-center mb-4 sm:mb-0">
+                <div className="flex flex-col gap-4 pb-8 border-b border-slate-700/50">
+                    <div className="flex items-center">
                         {post.author?.profilePic ? (
                             <img
                                 src={getImageUrl(post.author.profilePic)}
@@ -226,21 +221,21 @@ const Blogs = () => {
                         </div>
                     </div>
 
-                    <div className="flex items-center space-x-6 text-sm text-slate-400">
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-slate-400">
                         <div className="flex items-center">
-                            <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                             {publishDate}
                         </div>
                         <div className="flex items-center">
-                            <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             {post.readTime}
                         </div>
                         <div className="flex items-center">
-                            <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                             </svg>

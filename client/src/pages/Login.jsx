@@ -31,6 +31,13 @@ const Login = () => {
     return (
         <div className="min-h-screen flex items-center justify-center p-4">
             <div className="w-full max-w-md">
+                {/* Back to home */}
+                <Link to="/" className="inline-flex items-center gap-1.5 text-slate-400 hover:text-slate-100 text-sm mb-6 transition-colors">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Back to Home
+                </Link>
                 <div className="bg-slate-800 rounded-lg p-8 border border-slate-700">
                     {/* Header */}
                     <div className="text-center mb-8">
